@@ -1,9 +1,23 @@
 <html>
     <body>
-        <ul>
+        <h2>글 목록</h2>
+        <table style="text-align:center; width:700px; border:1px solid black;">
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>글쓴이</th>
+                </tr>
+            </thead>
             {% for data in board_data %}
-            <li>{{data.id}}, {{data.title}}</li>
+            <tbody>
+                <tr>
+                    <th>{{data.id}}</th>
+                    <th><a href="{{data.id}}">{{data.title}}</a></th>
+                    <th>{{data.writer}}</th>
+                </tr>
+            </tbody>
             {% endfor %}
-        </ul>
+        </table>
     </body>
 </html>
