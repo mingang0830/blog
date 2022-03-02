@@ -1,0 +1,15 @@
+<html>
+    <head>
+        
+    </head>
+    <body>
+        <h2>새 글 쓰기</h2>
+        <form method="POST">
+            {% csrf_token %}
+            제목<br><input type="text" name="title"><br>
+            글쓴이<br><input type="text" name="created_by"><br>
+            내용<br><textarea rows="10" cols="50" name="content"></textarea><br><br>
+            <input type="submit" value="확인">
+        </form>
+    </body>
+</html>

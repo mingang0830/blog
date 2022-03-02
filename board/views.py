@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
 
@@ -17,8 +17,19 @@ def board_list(request): # 클라이언트가 보낸것
         template = loader.get_template('board/index.html')
         return render(request, 'board/index.html', {"board_data": result})
 
+
 def detail(request,id):
     if request.method == "GET": 
         content_from_id = Board.objects.get(pk=id)
         return render(request, 'board/detail.html', {'detail': content_from_id})
 
+
+def write(request):
+    if request.method == "POST":
+        new_post = Board.objects.create(
+            title = request.POST['title'],
+            content = request.POST['content'],
+            created_by = request.POST['created_by'],
+        )
+        return redirect('/board/')
+    return render(request, 'board/write.html')  
