@@ -1,7 +1,16 @@
 <html>
+    <head>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
+    </head>
     <body>
-        <h2>본문</h2>
-        <p>제목 : {{detail.title}}</p>
-        <p>글 내용 : {{detail.content}}</p>
+        <h3>게시글</h3>
+                {% csrf_token %}
+                제목<br><input type="text" name="title" value="{{detail.title}}" readonly><br>
+                글쓴이<br><input type="text" name="created_by" value="{{detail.created_by}}" readonly><br>
+                내용<br><textarea rows="10" cols="50" name="content" readonly>{{detail.content}}</textarea><br><br>
+                <button><a href="{{detail.id}}/edit">수정</a></button> 
+                <button><a href="{{detail.id}}/remove">삭제</a></button>
+                <button><a href="/board/">목록</a></button>
     </body>
 </html>

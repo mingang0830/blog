@@ -1,0 +1,17 @@
+<html>
+    <head>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
+    </head>
+    <body>
+        <h3>게시글 수정</h3>
+            <form method="POST">
+                {% csrf_token %}
+                제목<br><input type="text" name="title" value="{{detail.title}}"><br>
+                글쓴이<br><input type="text" name="created_by" value="{{detail.created_by}}" disabled><br>
+                내용<br><textarea rows="10" cols="50" name="content">{{detail.content}}</textarea><br><br> 
+                <button><a href="/board/{{detail.id}}">취소</a></button>
+                <input type="submit" value="확인">
+            </form>
+    </body>
+</html>
