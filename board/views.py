@@ -1,8 +1,10 @@
+from django.forms import forms
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
 
 from board.models import Board
+from board.forms import WritePost, UpdatePost
 
 
 def board_list(request): # 클라이언트가 보낸것
@@ -26,14 +28,16 @@ def detail(request,id):
 
 
 def write(request):
-    if request.method == "POST":
-        new_post = Board.objects.create(
-            title = request.POST['title'],
-            content = request.POST['content'],
-            created_by = request.POST['created_by'],
-        )
-        return redirect('/board/')
-    return render(request, 'board/write.html')
+    write_post_form = WritePost(request.POST or None)
+    if request.method == "POST":      
+        if write_post_form.is_valid():
+            Board.objects.create(
+                title = write_post_form.cleaned_data['title'],
+                content = write_post_form.cleaned_data['content'],
+                created_by = write_post_form.cleaned_data['created_by'],
+            )
+            return redirect('/board/')
+    return render(request, 'board/write.html', {'write_form': write_post_form})
 
 
 def remove_post(request, id):
@@ -44,11 +48,13 @@ def remove_post(request, id):
 
 
 def edit_post(request, id):
-    post_from_id = Board.objects.get(pk=id)
+    post = Board.objects.get(pk=id)
     if request.method == "POST":
-        post_from_id.title = request.POST["title"]
-        post_from_id.content = request.POST["content"]
-        
-        post_from_id.save()
-        return redirect(f'/board/{post_from_id.id}')
-    return render(request, 'board/edit.html', {'detail': post_from_id})
+        update_post_form = UpdatePost(request.POST)
+        if update_post_form.is_valid():
+            post.title = update_post_form.cleaned_data["title"]
+            post.content = update_post_form.cleaned_data["content"]       
+            post.save()
+        return redirect(f'/board/{post.id}')
+    form = UpdatePost(instance=post)
+    return render(request, 'board/edit.html', {'detail': form})
