@@ -1,0 +1,17 @@
+<html>
+    <head>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
+    </head>
+    <body>
+        <h3>회원가입</h3>
+        <form method="POST">
+            {% csrf_token %}
+            이름<br>{{user_form.username}}<br>
+            비밀번호<br>{{user_form.password1}}<br>
+            비밀번호 확인<br>{{user_form.password2}}<br>
+            이메일<br>{{user_form.email}}<br>
+            <button><a href="/board/">취소</a></button> &nbsp &nbsp &nbsp
+            <input type="submit" value="회원가입">
+        </form>
+    </body>
