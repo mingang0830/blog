@@ -63,17 +63,13 @@ def signup(request):
     user_form = UserForm(request.POST or None)
     if request.method == 'POST':
         if user_form.is_valid():
-            try:
-                username = user_form.cleaned_data['username']
-                password1 = user_form.cleaned_data['password1']
-                password2 = user_form.cleaned_data['password2']
-                email = user_form.cleaned_data['email']
-                new_user = User.objects.create_user(username, password1, password2, email)
-                new_user.save()
-                return render(request, 'board/login.html', {'message': '가입완료'})
-            except:
-                return render(request, 'board/signup', {'message': '이미 존재하는 회원입니다'})
-    else:
-        return render(request, 'board/signup.html', {'user_form': user_form})
+            username = user_form.cleaned_data['username']
+            password1 = user_form.cleaned_data['password1']
+            password2 = user_form.cleaned_data['password2']
+            email = user_form.cleaned_data['email']
+            new_user = User.objects.create_user(username, password1, password2, email)
+            new_user.save()
+            return render(request, 'board/login.html', {'message': '가입완료'})
+    return render(request, 'board/signup.html', {'user_form': user_form})
 
 
