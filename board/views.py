@@ -1,10 +1,9 @@
-from django.forms import forms
+from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
-from django.http import HttpResponse, JsonResponse
 from django.template import loader
 
 from board.models import Board
-from board.forms import WritePost, UpdatePost
+from board.forms import UserForm, WritePost, UpdatePost
 
 
 def board_list(request): # 클라이언트가 보낸것
@@ -58,3 +57,21 @@ def edit_post(request, id):
         return redirect(f'/board/{post.id}')
     form = UpdatePost(instance=post)
     return render(request, 'board/edit.html', {'detail': form})
+
+
+def signup(request):
+    user_form = UserForm(request.POST or None)
+    if request.method == 'POST':
+        if user_form.is_valid():
+            try:
+                username = user_form.cleaned_data['username']
+                password = user_form.cleaned_data['password']
+                new_user = User.objects.create_user(username, password)
+                new_user.save()
+                return render(request, 'board/login.html', {'message': '가입완료'})
+            except:
+                return render(request, 'board/signup', {'message': '이미 존재하는 회원입니다'})
+    else:
+        return render(request, 'board/signup.html', {'user_form': user_form})
+
+
