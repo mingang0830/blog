@@ -65,8 +65,10 @@ def signup(request):
         if user_form.is_valid():
             try:
                 username = user_form.cleaned_data['username']
-                password = user_form.cleaned_data['password']
-                new_user = User.objects.create_user(username, password)
+                password1 = user_form.cleaned_data['password1']
+                password2 = user_form.cleaned_data['password2']
+                email = user_form.cleaned_data['email']
+                new_user = User.objects.create_user(username, password1, password2, email)
                 new_user.save()
                 return render(request, 'board/login.html', {'message': '가입완료'})
             except:

@@ -1,7 +1,5 @@
-from dataclasses import field
-import imp
-from operator import mod
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Board
 
@@ -17,7 +15,9 @@ class UpdatePost(forms.ModelForm):
         fields = ['title', 'content', 'created_by']
 
 
-class UserForm(forms.ModelForm):
+class UserForm(UserCreationForm):
+    email = forms.EmailField(label="이메일")
+    
     class Meta:
         model = User
-        field = ['username', 'password']
+        fields = ("username", "password1", "password2", "email")
