@@ -2,6 +2,7 @@ from dataclasses import field
 import imp
 from operator import mod
 from django import forms
+from django.contrib.auth.models import User
 from .models import Board
 
 class WritePost(forms.Form):
@@ -14,3 +15,9 @@ class UpdatePost(forms.ModelForm):
     class Meta:
         model = Board
         fields = ['title', 'content', 'created_by']
+
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        field = ['username', 'password']
