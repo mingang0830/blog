@@ -6,6 +6,11 @@
     <body>
         <div id="main">
             <h3>글 목록</h3>
+                {% if user.is_authenticated %}
+                    <button><a href="logout">로그아웃</a></button>
+                {% else %}
+                    <button><a href="signin">로그인</a></button>
+                {% endif %}
             <table style="text-align:center; width:700px; border:1px solid black;">
                 <thead>
                     <tr>
@@ -26,7 +31,9 @@
                 </tbody>
                 {% endfor %}
             </table>
-            <br><button><a href="write">글쓰기</a></button>
+            {% if user.is_authenticated %}
+                <br><button><a href="write">글쓰기</a></button>
+            {% endif %}
         </div>
     </body>
-</html>
+</html
