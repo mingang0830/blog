@@ -1,9 +1,10 @@
-from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
-from django.template import loader
+from django.http import HttpResponse
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 from board.models import Board
-from board.forms import UserForm, WritePost, UpdatePost
+from board.forms import WritePost, UpdatePost, UserForm, LoginForm
 
 
 def board_list(request): # 클라이언트가 보낸것
@@ -16,16 +17,16 @@ def board_list(request): # 클라이언트가 보낸것
                 "writer": board.created_by,
                 "created_at": board.created_at
             })
-        template = loader.get_template('board/index.html')
         return render(request, 'board/index.html', {"board_data": result})
 
 
-def detail(request,id):
+def detail(request, id):
     if request.method == "GET": 
         post_from_id = Board.objects.get(pk=id)
         return render(request, 'board/detail.html', {'detail': post_from_id})
 
 
+@login_required
 def write(request):
     write_post_form = WritePost(request.POST or None)
     if request.method == "POST":      
@@ -39,6 +40,7 @@ def write(request):
     return render(request, 'board/write.html', {'write_form': write_post_form})
 
 
+@login_required
 def remove_post(request, id):
     post_from_id = Board.objects.get(pk=id)
     if request.method == "GET":
@@ -46,6 +48,7 @@ def remove_post(request, id):
         return redirect('/board/')
 
 
+@login_required
 def edit_post(request, id):
     post = Board.objects.get(pk=id)
     if request.method == "POST":
@@ -68,4 +71,22 @@ def signup(request):
     
     return render(request, 'board/signup.html', {'user_form': user_form})
 
+
+def signin(request):
+    login_form = LoginForm(request.POST or None)
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('/board/')
+        else:
+            return HttpResponse("로그인 실패. 다시 시도해 주세요.")
+    return render(request, 'board/signin.html', {'login_form': login_form})
+
+
+def signout(request):
+    logout(request)
+    return redirect('/board/')
 

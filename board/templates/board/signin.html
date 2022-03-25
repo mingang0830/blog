@@ -1,0 +1,16 @@
+<html>
+    <head>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
+    </head>
+    <body>
+        <h3>{{message}}</h3>
+            <form method="POST">
+                {% csrf_token %}
+                아이디<br>{{login_form.username}}<br>
+                비밀번호<br>{{login_form.password}}<br>
+                <button><a href="/board/">취소</a></button>
+                <input type="submit" value="로그인">
+            </form>
+    </body>
+</html>
