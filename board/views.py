@@ -1,7 +1,6 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 
 from board.models import Board
 from board.forms import WritePost, UpdatePost, UserForm, LoginForm
@@ -26,7 +25,6 @@ def detail(request, id):
         return render(request, 'board/detail.html', {'detail': post_from_id})
 
 
-@login_required
 def write(request):
     write_post_form = WritePost(request.POST or None)
     if request.method == "POST":      
@@ -40,7 +38,6 @@ def write(request):
     return render(request, 'board/write.html', {'write_form': write_post_form})
 
 
-@login_required
 def remove_post(request, id):
     post_from_id = Board.objects.get(pk=id)
     if request.method == "GET":
@@ -48,7 +45,6 @@ def remove_post(request, id):
         return redirect('/board/')
 
 
-@login_required
 def edit_post(request, id):
     post = Board.objects.get(pk=id)
     if request.method == "POST":
