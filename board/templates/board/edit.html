@@ -8,7 +8,6 @@
             <form method="POST">
                 {% csrf_token %}
                 제목<br>{{detail.title}}<br>
-                글쓴이<br>{{detail.created_by}}<br>
                 내용<br>{{detail.content}}<br><br> 
                 <button><a href="/board/">취소</a></button>
                 <input type="submit" value="확인">

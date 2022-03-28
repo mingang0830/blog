@@ -32,7 +32,7 @@ def write(request):
             Board.objects.create(
                 title = write_post_form.cleaned_data['title'],
                 content = write_post_form.cleaned_data['content'],
-                created_by = write_post_form.cleaned_data['created_by'],
+                created_by = request.user,
             )
             return redirect('/board/')
     return render(request, 'board/write.html', {'write_form': write_post_form})
