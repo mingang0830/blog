@@ -13,7 +13,7 @@ def board_list(request): # 클라이언트가 보낸것
             result.append({
                 "id": board.id,
                 "title": board.title,
-                "writer": board.created_by,
+                "user": board.created_by,
                 "created_at": board.created_at
             })
         return render(request, 'board/index.html', {"board_data": result})
