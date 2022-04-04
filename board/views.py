@@ -2,8 +2,8 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 
-from board.models import Board
-from board.forms import WritePost, UpdatePost, UserForm, LoginForm
+from board.models import Board, Comment
+from board.forms import WritePost, UpdatePost, UserForm, LoginForm, CommentForm
 
 
 def board_list(request): # 클라이언트가 보낸것
@@ -22,8 +22,10 @@ def board_list(request): # 클라이언트가 보낸것
 def detail(request, id):
     if request.method == "GET": 
         post_from_id = Board.objects.get(pk=id)
-        return render(request, 'board/detail.html', {'detail': post_from_id})
+        comment_form = CommentForm()
+        return render(request, 'board/detail.html', {'detail': post_from_id, 'comment_form': comment_form})
 
+        
 
 def write(request):
     write_post_form = WritePost(request.POST or None)
@@ -85,4 +87,20 @@ def signin(request):
 def signout(request):
     logout(request)
     return redirect('/board/')
+
+
+def new_comment(request, id):
+    if request.method == "POST":
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment_form.commnet = comment_form.cleaned_data['comment'],
+            # post_id 가져와야함..
+            comment_form.save()
+
+            return redirect(f'/board/{id}')
+
+            
+
+
+
 
