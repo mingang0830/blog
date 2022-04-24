@@ -1,6 +1,8 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
+from django.views import View
+from django.views.generic import DetailView
 
 from board.models import Board, Comment
 from board.forms import WritePost, UpdatePost, UserForm, LoginForm, CommentForm
@@ -19,13 +21,30 @@ def board_list(request): # 클라이언트가 보낸것
         return render(request, 'board/index.html', {"board_data": result})
 
 
-def detail(request, id):
-    if request.method == "GET": 
-        post_from_id = Board.objects.get(pk=id)
-        comment_form = CommentForm()
-        return render(request, 'board/detail.html', {'detail': post_from_id, 'comment_form': comment_form})
+# def detail(request, id): # GET / POST / PUT / DELETE (detail read, detail insert, detail edit, detail delete)
+#     board = Board.objects.get(pk=id)
+#     if request.method == "GET": 
+#         comment_form = CommentForm()
+#         return render(request, 'board/detail.html', {'detail': board, 'comment_form': comment_form})
+#     elif request.method == "PUT":
+#         form = UpdatePost(instance=board)
+#         return render(request, 'board/edit.html', {'detail': form})
+#     elif request.method == "DELETE":
+#         board.delete()
+#         return redirect('/board/')
 
-        
+class DetailView(View):
+
+    def get(self, request, id):
+        board = Board.objects.get(pk=id)
+        comment_form = CommentForm()
+        return render(request, 'board/detail.html', {'detail': board, 'comment_form': comment_form})
+
+    def delete(self, request, id):
+        board = Board.objects.get(pk=id)
+        board.delete()
+        return redirect('/board/')
+
 
 def write(request):
     write_post_form = WritePost(request.POST or None)
@@ -38,14 +57,6 @@ def write(request):
             )
             return redirect('/board/')
     return render(request, 'board/write.html', {'write_form': write_post_form})
-
-
-def remove_post(request, id):
-    post_from_id = Board.objects.get(pk=id)
-    if request.method == "GET":
-        post_from_id.delete()
-        return redirect('/board/')
-
 
 def edit_post(request, id):
     post = Board.objects.get(pk=id)
@@ -89,18 +100,13 @@ def signout(request):
     return redirect('/board/')
 
 
-def new_comment(request, id):
+def comment(request, id): 
     if request.method == "POST":
         comment_form = CommentForm(request.POST)
         if comment_form.is_valid():
-            comment_form.commnet = comment_form.cleaned_data['comment'],
-            # post_id 가져와야함..
-            comment_form.save()
+            comment_form.comment = comment_form.cleaned_data['comment']
+            comment = comment_form.save()
+            comment.post_id = id
+            comment.save()
 
             return redirect(f'/board/{id}')
-
-            
-
-
-
-
