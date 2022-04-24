@@ -5,14 +5,28 @@
     </head>
     <body>
         <h3>게시글</h3>
-                {% csrf_token %}
                 제목<br><input type="text" name="title" value="{{detail.title}}" readonly><br>
                 글쓴이<br><input type="text" name="created_by" value="{{detail.created_by}}" readonly><br>
                 내용<br><textarea rows="10" cols="50" name="content" readonly>{{detail.content}}</textarea><br><br>
                 {% if user.is_authenticated %}
-                <button><a href="{{detail.id}}/edit">수정</a></button> &nbsp &nbsp &nbsp
-                <button><a href="{{detail.id}}/remove">삭제</a></button> &nbsp &nbsp &nbsp
-                {% endif %}
+                <button><a href="{{detail.id}}/edit">수정</a></button> <br/>
+                <form method="DELETE" action="{{detail.id}}">
+                    <button type="submit">삭제</button> <br/>
+                </form>
                 <button><a href="/board/">목록</a></button>
+                {% endif %}
+                <!--댓글 입력-->
+                <form method="POST" action="{{detail.id}}/new_comment/" >
+                    {% csrf_token %}
+                    {{comment_form}}
+                    <input type="hidden" name="post_id" value="{{ detail.id }}"/>
+                    <input type="submit" value="댓글 입력">
+                </form>
+                <!--댓글 목록-->
+                {% for comment in detail.comment_set.all %}
+                {{comment.comment}} 
+                {{comment.date}}<br/>
+                {% endfor %}
+                
     </body>
 </html>
