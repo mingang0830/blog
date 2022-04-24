@@ -10,12 +10,19 @@ class Board(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
-
-class Comment(models.Model):
-    comment = models.TextField()
-    date = models.DateTimeField(auto_now_add=True)
+class Commentable(models.Model):
+    class Meta:
+        abstract = True
+    
     post = models.ForeignKey(Board, on_delete=models.CASCADE, null=True)
+    comment = models.TextField()
 
-    # 댓글이 object형태가 아닌 댓글 자체가 보이도록
     def __str__(self):
         return self.comment
+
+class Comment(Commentable):
+    date = models.DateTimeField(auto_now_add=True)
+    
+class SubComment(Commentable):
+    parent_comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True)
+    
