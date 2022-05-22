@@ -5,7 +5,7 @@ from django.views import View
 from django.views.generic import DetailView
 
 from board.models import Board, Comment
-from board.forms import WritePost, UpdatePost, UserForm, LoginForm, CommentForm
+from board.forms import SubCommentForm, WritePost, UpdatePost, UserForm, LoginForm, CommentForm
 
 
 def board_list(request): # 클라이언트가 보낸것
@@ -49,7 +49,8 @@ def detail(request, id):
     if request.method == "GET": 
         post_from_id = Board.objects.get(pk=id)
         comment_form = CommentForm()
-        return render(request, 'board/detail.html', {'detail': post_from_id, 'comment_form': comment_form})
+        subcomment_form = SubCommentForm()
+        return render(request, 'board/detail.html', {'detail': post_from_id, 'comment_form': comment_form, 'subcomment_form': subcomment_form})
 
 def remove_post(request, id):
     post_from_id = Board.objects.get(pk=id)
@@ -127,4 +128,14 @@ def delete_comment(request, id, c_id):
     comment_id = Comment.objects.get(pk=c_id)
     if request.method == "GET":
         comment_id.delete()
+        return redirect(f'/board/{id}')
+
+def new_subcomment(request, id):
+    subcomment_form = SubCommentForm(request.POST)
+    if subcomment_form.is_valid():
+        subcomment_form.subcomment = subcomment_form.cleaned_data['subcomment']
+        subcomment = subcomment_form.save()
+        subcomment.post_id = id
+        subcomment.parent_comment_id = request.POST.get('comment_id')
+        subcomment_form.save()
         return redirect(f'/board/{id}')
