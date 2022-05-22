@@ -16,17 +16,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from board.views import board_list, DetailView, write, edit_post, signup, signin, signout, comment
+from board.views import board_list, delete_comment, detail, remove_post, write, edit_post, signup, signin, signout, new_comment
 
 urlpatterns = [
     # path('', board_list),
     path('admin/', admin.site.urls),
     path('board/', board_list),
-    path('board/<int:id>', DetailView.as_view()),
+    path('board/<int:id>', detail),
+    # path('board/<int:id>', DetailView.as_view()),
     path('board/write', write),
     path('board/<int:id>/edit', edit_post),
+    path('board/<int:id>/remove', remove_post),
     path('board/signup', signup),
     path('board/signin', signin),
     path('board/logout', signout),
-    path('board/<int:id>/new_comment/', comment)
+    path('board/<int:id>/new_comment/', new_comment),
+    path('board/<int:id>/delete_comment/<int:c_id>', delete_comment)
 ]
