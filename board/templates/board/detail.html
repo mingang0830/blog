@@ -2,8 +2,10 @@
     <head>
         {% load static %}
         <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
+        
     </head>
     <body>
+        
         <h3>게시글</h3>
                 제목<br><input type="text" name="title" value="{{detail.title}}" readonly><br>
                 글쓴이<br><input type="text" name="created_by" value="{{detail.created_by}}" readonly><br>
@@ -20,30 +22,36 @@
                     <td>
                         <button><a href="/board/">목록</a></button>
                     </td>
-                </table>
+                </table><br><br>
                 <!--댓글 입력-->
                 <form method="POST" action="{{detail.id}}/new_comment/" >
                     {% csrf_token %}
                     {{comment_form}}
-                    <input type="hidden" name="post_id" value="{{ detail.id }}"/>
-                    <input type="submit" value="댓글 입력">
-                </form>
+                    <input type="submit" value="입력">
+                </form><br><br>
                 <!--댓글 목록-->
                 {% for comment in detail.comment_set.all %}
-                <table>
-                    <td>
-                        {{comment.comment}}
-                    </td>
-                    <td>
-                        {{comment.date}}
-                    </td>
-                    {% if user.is_authenticated %}
-                    <td>
-                        <button><a href="{{detail.id}}/delete_comment/{{comment.id}}">댓글 삭제</a></button>
-                    </td>
-                    {% endif %}
-                </table>
+                {{comment.comment}}
+                {{comment.date}}
+                {% if user.is_authenticated %}
+                <button><a href="{{detail.id}}/delete_comment/{{comment.id}}">삭제</a></button>
+                {% endif %}
+                &nbsp;&nbsp;
+                <!--대댓글 입력-->
+                <form method="POST" action="{{detail.id}}/new_subcomment/">
+                    {% csrf_token %}          
+                    ↪{{subcomment_form.subcomment}}
+                    <input type="hidden" name="comment_id" value="{{ comment.id }}"/>
+                    <input type="submit" value="입력"><br>
+                    <!--대댓글 목록-->
+                    {% for subcomment in comment.subcomment_set.all %}
+                    ↪{{subcomment.subcomment}}{{subcomment.date}}<br>
+                    {% endfor %}
+                </form>
                 {% endfor %}
+                <br>
+                
+                
                 
     </body>
 </html>
