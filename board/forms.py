@@ -1,7 +1,8 @@
+from dataclasses import field
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Board, Comment
+from .models import Board, Comment, SubComment
 
 
 class WritePost(forms.Form):
@@ -33,6 +34,10 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['comment']
-        widgets = {'comment': forms.Textarea(attrs={
-                              'style': 'height: 70px;width:400px'})
-        }
+        
+        
+class SubCommentForm(forms.ModelForm):
+    class Meta:
+        model = SubComment
+        fields = ['subcomment']
+ 
