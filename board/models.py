@@ -15,14 +15,15 @@ class Commentable(models.Model):
         abstract = True
     
     post = models.ForeignKey(Board, on_delete=models.CASCADE, null=True)
-    comment = models.TextField()
+    date = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return self.comment
 
 class Comment(Commentable):
-    date = models.DateTimeField(auto_now_add=True)
+    comment = models.CharField('댓글', max_length=200)
     
 class SubComment(Commentable):
+    subcomment = models.CharField('대댓글', max_length=150,null=True)
     parent_comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True)
     
