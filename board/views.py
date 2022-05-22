@@ -33,16 +33,28 @@ def board_list(request): # 클라이언트가 보낸것
 #         board.delete()
 #         return redirect('/board/')
 
-class DetailView(View):
+# class DetailView(View):
 
-    def get(self, request, id):
-        board = Board.objects.get(pk=id)
+#     def get(self, request, id):
+#         board = Board.objects.get(pk=id)
+#         comment_form = CommentForm()
+#         return render(request, 'board/detail.html', {'detail': board, 'comment_form': comment_form})
+
+#     def delete(self, request, id):
+#         board = Board.objects.get(pk=id)
+#         board.delete()
+#         return redirect('/board/')
+
+def detail(request, id):
+    if request.method == "GET": 
+        post_from_id = Board.objects.get(pk=id)
         comment_form = CommentForm()
-        return render(request, 'board/detail.html', {'detail': board, 'comment_form': comment_form})
+        return render(request, 'board/detail.html', {'detail': post_from_id, 'comment_form': comment_form})
 
-    def delete(self, request, id):
-        board = Board.objects.get(pk=id)
-        board.delete()
+def remove_post(request, id):
+    post_from_id = Board.objects.get(pk=id)
+    if request.method == "GET":
+        post_from_id.delete()
         return redirect('/board/')
 
 
@@ -100,7 +112,7 @@ def signout(request):
     return redirect('/board/')
 
 
-def comment(request, id): 
+def new_comment(request, id): 
     if request.method == "POST":
         comment_form = CommentForm(request.POST)
         if comment_form.is_valid():
@@ -110,3 +122,9 @@ def comment(request, id):
             comment.save()
 
             return redirect(f'/board/{id}')
+
+def delete_comment(request, id, c_id):
+    comment_id = Comment.objects.get(pk=c_id)
+    if request.method == "GET":
+        comment_id.delete()
+        return redirect(f'/board/{id}')
