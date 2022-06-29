@@ -91,7 +91,7 @@ def signup(request):
     if request.method == 'POST':
         if user_form.is_valid():
             user_form.save()
-            return redirect("/board/login")
+            return redirect("/board/signin")
     
     return render(request, 'board/signup.html', {'user_form': user_form})
 
