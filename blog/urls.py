@@ -16,16 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from board.views import board_list, delete_comment, detail, new_subcomment, remove_post, write, edit_post, signup, signin, signout, new_comment
+from board.views import board_list, delete_comment, detail, new_subcomment, remove_post, write, update_post, signup, signin, signout, new_comment, index_page
 
 urlpatterns = [
-    # path('', board_list),
+    path('', index_page),
     path('admin/', admin.site.urls),
     path('board/', board_list),
     path('board/<int:id>', detail),
     # path('board/<int:id>', DetailView.as_view()),
     path('board/write', write),
-    path('board/<int:id>/edit', edit_post),
+    path('board/<int:id>/edit', update_post),
     path('board/<int:id>/remove', remove_post),
     path('board/signup', signup),
     path('board/signin', signin),

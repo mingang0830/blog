@@ -8,6 +8,9 @@ from board.models import Board, Comment
 from board.forms import SubCommentForm, WritePost, UpdatePost, UserForm, LoginForm, CommentForm
 
 
+def index_page(request):
+    return render(request, 'board/index.html')
+
 def board_list(request): # 클라이언트가 보낸것
     if request.method == "GET": # 클라이언트가 요청한 method
         result = []
@@ -18,8 +21,7 @@ def board_list(request): # 클라이언트가 보낸것
                 "user": board.created_by,
                 "created_at": board.created_at
             })
-        return render(request, 'board/index.html', {"board_data": result})
-
+        return render(request, 'board/list.html', {"board_data": result})
 
 # def detail(request, id): # GET / POST / PUT / DELETE (detail read, detail insert, detail edit, detail delete)
 #     board = Board.objects.get(pk=id)
@@ -71,7 +73,7 @@ def write(request):
             return redirect('/board/')
     return render(request, 'board/write.html', {'write_form': write_post_form})
 
-def edit_post(request, id):
+def update_post(request, id):
     post = Board.objects.get(pk=id)
     if request.method == "POST":
         update_post_form = UpdatePost(request.POST)

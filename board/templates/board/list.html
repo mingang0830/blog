@@ -1,0 +1,39 @@
+<html>
+    <head>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">        
+    </head>
+    <body>
+        <div id="main">
+            <h3>글 목록</h3>
+                {% if user.is_authenticated %}
+                    <button><a href="logout">로그아웃</a></button>
+                {% else %}
+                    <button><a href="signin">로그인</a></button>
+                {% endif %}
+            <table style="text-align:center; width:700px; border:1px solid black;">
+                <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>글쓴이</th>
+                        <th>작성 시간</th>
+                    </tr>
+                </thead>
+                {% for data in board_data %}
+                <tbody>
+                    <tr>
+                        <th>{{data.id}}</th>
+                        <th><a href="{{data.id}}">{{data.title}}</a></th>
+                        <th>{{data.user}}</th>
+                        <th>{{data.created_at}}</th>
+                    </tr>
+                </tbody>
+                {% endfor %}
+            </table>
+            {% if user.is_authenticated %}
+                <br><button><a href="write">글쓰기</a></button>
+            {% endif %}
+        </div>
+    </body>
+</html
