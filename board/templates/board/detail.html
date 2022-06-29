@@ -37,16 +37,17 @@
                 <button><a href="{{detail.id}}/delete_comment/{{comment.id}}">삭제</a></button>
                 {% endif %}
                 &nbsp;&nbsp;
-                <!--대댓글 입력-->
+                <!--대댓글-->
                 <form method="POST" action="{{detail.id}}/new_subcomment/">
-                    {% csrf_token %}          
-                    ↪{{subcomment_form.subcomment}}
-                    <input type="hidden" name="comment_id" value="{{ comment.id }}"/>
-                    <input type="submit" value="입력"><br>
+                    {% csrf_token %}     
                     <!--대댓글 목록-->
                     {% for subcomment in comment.subcomment_set.all %}
                     ↪{{subcomment.subcomment}} {{subcomment.date}}<br>
                     {% endfor %}
+                    <!--대댓글 입력-->     
+                    ↪{{subcomment_form.subcomment}}
+                    <input type="hidden" name="comment_id" value="{{ comment.id }}"/>
+                    <input type="submit" value="입력"><br>
                 </form>
                 {% endfor %}
                 <br>
