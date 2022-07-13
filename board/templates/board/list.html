@@ -7,10 +7,11 @@
         <div id="main">
             <h3>글 목록</h3>
                 {% if user.is_authenticated %}
-                    <button><a href="logout">로그아웃</a></button>
+                    <button><a href="logout">로그아웃</a></button><br>
                 {% else %}
-                    <button><a href="signin">로그인</a></button>
+                    <button><a href="signin">로그인</a></button><br>
                 {% endif %}
+            <br>
             <table style="text-align:center; width:700px; border:1px solid black;">
                 <thead>
                     <tr>
