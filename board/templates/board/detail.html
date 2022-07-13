@@ -10,7 +10,7 @@
                 제목<br><input type="text" name="title" value="{{detail.title}}" readonly><br>
                 글쓴이<br><input type="text" name="created_by" value="{{detail.created_by}}" readonly><br>
                 내용<br><textarea rows="10" cols="50" name="content" readonly>{{detail.content}}</textarea><br><br>
-                {% if user.is_authenticated %}
+                {% if user.username == detail.created_by%}
                 <table>
                     <td>
                         <button><a href="{{detail.id}}/edit">수정</a></button> <br/>
