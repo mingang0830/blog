@@ -1,0 +1,15 @@
+[Unit]
+Description=uWSGI server daemon
+After=syslog.target
+
+[Service]
+#ExecStart=/home/ec2-user/venv/bin/uwsgi -i /home/ec2-user/blog/.config/uwsgi/board.ini
+ExecStart=/home/ec2-user/blog/venv/bin/uwsgi -i /home/ec2-user/blog/.config/uwsgi/board.ini
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all
+ 
+[Install]
+WantedBy=multi-user.target
