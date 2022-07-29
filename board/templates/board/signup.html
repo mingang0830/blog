@@ -2,12 +2,13 @@
     <head>
         {% load static %}
         <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
+
     </head>
     <body>
         <h3>회원가입</h3>
         <form method="POST">
             {% csrf_token %}
-           {% for field in user_form %}
+            {% for field in user_form %}
                 <div class="form-group">
                     <label for="id_{{ field.html_name}}">{{ field.label }}</label>
                     {{ field }}
