@@ -7,10 +7,13 @@
         <h3>회원가입</h3>
         <form method="POST">
             {% csrf_token %}
-            아이디<br>{{user_form.username}}<br>
-            비밀번호<br>{{user_form.password1}}<br>
-            비밀번호 확인<br>{{user_form.password2}}<br>
-            이메일<br>{{user_form.email}}<br>
+           {% for field in user_form %}
+                <div class="form-group">
+                    <label for="id_{{ field.html_name}}">{{ field.label }}</label>
+                    {{ field }}
+                    {{ field.errors }} 
+                </div>
+            {% endfor %}
             <button><a href="/board/">취소</a></button> &nbsp &nbsp &nbsp
             <input type="submit" value="회원가입">
         </form>

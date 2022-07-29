@@ -7,8 +7,12 @@
         <h3>{{message}}</h3>
             <form method="POST">
                 {% csrf_token %}
-                아이디<br>{{login_form.username}}<br>
-                비밀번호<br>{{login_form.password}}<br>
+                {% for field in login_form %}
+                <div class="form-group">
+                    <label for="id_{{ field.html_name}}">{{ field.label }}</label>
+                    {{ field }}
+                </div>
+            	{% endfor %}
                 <button><a href="/board/">취소</a></button>
                 <input type="submit" value="로그인">
             </form>
