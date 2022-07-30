@@ -16,6 +16,10 @@ class UpdatePost(forms.ModelForm):
 
 
 class UserForm(UserCreationForm):
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs['placeholder'] = "문자, 숫자, @.+-_만 가능"
+        self.fields['password1'].widget.attrs['placeholder'] = "8자 이상 문자, 숫자 포함"
     email = forms.EmailField(label="이메일")
     
     class Meta:
