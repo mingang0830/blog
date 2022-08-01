@@ -1,58 +1,59 @@
 <html>
     <head>
         {% load static %}
-        <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link rel="stylesheet"  type="text/css" href="{% static 'css/bootstrap.min.css' %}">
         
     </head>
     <body>
-        
-        <h3>게시글</h3>
-                제목<br><input type="text" name="title" value="{{detail.title}}" readonly><br>
-                글쓴이<br><input type="text" name="created_by" value="{{detail.created_by}}" readonly><br>
-                내용<br><textarea rows="10" cols="50" name="content" readonly>{{detail.content}}</textarea><br><br>
-                {% if user.username == detail.created_by%}
-                <table>
-                    <td>
-                        <button><a href="{{detail.id}}/edit">수정</a></button> <br/>
-                    </td>
-                    <td>
-                        <button><a href="{{detail.id}}/remove">삭제</a></button>
-                    </td>
+        <div class="container my-3">
+            <h3>게시글</h3>
+                    제목<br><input type="text" name="title" value="{{detail.title}}" readonly><br>
+                    글쓴이<br><input type="text" name="created_by" value="{{detail.created_by}}" readonly><br>
+                    내용<br><textarea rows="10" cols="50" name="content" readonly>{{detail.content}}</textarea><br><br>
+                    {% if user.username == detail.created_by%}
+                    <table>
+                        <td>
+                            <button type="button" class="btn btn-dark"><a href="{{detail.id}}/edit" style="color: white;">수정</a></button> <br/>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-dark"><a href="{{detail.id}}/remove" style="color: white;">삭제</a></button>
+                        </td>
+                        {% endif %}
+                        <td>
+                            <button type="button" class="btn btn-dark"><a href="/board/" style="color: white;">목록</a></button>
+                        </td>
+                    </table><br><br>
+                    <!--댓글 입력-->
+                    <form method="POST" action="{{detail.id}}/new_comment/" >
+                        {% csrf_token %}
+                        {{comment_form}}
+                        <input type="submit" value="입력">
+                    </form><br>
+                    <!--댓글 목록-->
+                    {% for comment in detail.comment_set.all %}
+                    {{comment.comment}}
+                    {{comment.date}}
+                    <!-- {% if user.username == detail.created_by %}
+                    <button><a href="{{detail.id}}/delete_comment/{{comment.id}}" style="color: black;">삭제</a></button>
                     {% endif %}
-                    <td>
-                        <button><a href="/board/">목록</a></button>
-                    </td>
-                </table><br><br>
-                <!--댓글 입력-->
-                <form method="POST" action="{{detail.id}}/new_comment/" >
-                    {% csrf_token %}
-                    {{comment_form}}
-                    <input type="submit" value="입력">
-                </form><br><br>
-                <!--댓글 목록-->
-                {% for comment in detail.comment_set.all %}
-                {{comment.comment}}
-                {{comment.date}}
-                {% if user.is_authenticated %}
-                <button><a href="{{detail.id}}/delete_comment/{{comment.id}}">삭제</a></button>
-                {% endif %}
-                &nbsp;&nbsp;
-                <!--대댓글-->
-                <form method="POST" action="{{detail.id}}/new_subcomment/">
-                    {% csrf_token %}     
-                    <!--대댓글 목록-->
-                    {% for subcomment in comment.subcomment_set.all %}
-                    ↪{{subcomment.subcomment}} {{subcomment.date}}<br>
+                    &nbsp;&nbsp; -->
+                    <!--대댓글-->
+                    <form method="POST" action="{{detail.id}}/new_subcomment/">
+                        {% csrf_token %}     
+                        <!--대댓글 목록-->
+                        {% for subcomment in comment.subcomment_set.all %}
+                        &nbsp ↪{{subcomment.subcomment}} {{subcomment.date}}<br>
+                        {% endfor %}
+                        <!--대댓글 입력-->     
+                        &nbsp↪{{subcomment_form.subcomment}}
+                        <input type="hidden" name="comment_id" value="{{ comment.id }}"/>
+                        <input type="submit" value="입력"><br>
+                    </form>
                     {% endfor %}
-                    <!--대댓글 입력-->     
-                    ↪{{subcomment_form.subcomment}}
-                    <input type="hidden" name="comment_id" value="{{ comment.id }}"/>
-                    <input type="submit" value="입력"><br>
-                </form>
-                {% endfor %}
-                <br>
+                    <br>
                 
                 
-                
+            </div>     
     </body>
 </html>

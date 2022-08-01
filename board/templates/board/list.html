@@ -6,16 +6,15 @@
         
     </head>
     <body>
-        <div>
+        <div class="container my-3">
             <h3>글 목록</h3>
                 {% if user.is_authenticated %}
-                    <button><a href="logout">로그아웃</a></button><br>
+                    <button type="button" class="btn btn-dark"><a href="logout" style="color:white;">로그아웃</a></button><br>
                 {% else %}
-                    <button><a href="signin">로그인</a></button>
-                    <button><a href="signup">회원가입</a></button><br>
+                    <button type="button" class="btn btn-dark"><a href="signin" style="color:white;">로그인</a></button>
+                    <button type="button" class="btn btn-dark"><a href="signup" style="color:white;">회원가입</a></button><br>
                 {% endif %}
             <br>
-            <div class="container my-3">
                 <table class="table">
                     <thead>
                         <tr class="table-dark">
@@ -29,15 +28,14 @@
                     <tbody>
                         <tr>
                             <th>{{data.id}}</th>
-                            <th><a href="{{data.id}}">{{data.title}}</a></th>
+                            <th><a href="{{data.id}}" style="color: black;">{{data.title}}</a></th>
                             <th>{{data.user}}</th>
                             <th>{{data.created_at}}</th>
                         </tr>
                     </tbody>
                     {% endfor %}
                 </table>
-            </div>
-                <br><button><a href="write">글쓰기</a></button>
+                <br><button type="button" class="btn btn-dark"><a href="write" style="color:white;">글쓰기</a></button>
         </div>
     </body>
 </html

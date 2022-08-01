@@ -1,12 +1,14 @@
 <html>
     <head>
         {% load static %}
-        <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
+        <link rel="stylesheet"  type="text/css" href="{% static 'css/bootstrap.min.css' %}"> 
     </head>
     <body>
-        <h3>무엇으로 만들지 모르는 공간</h3>
-        <button><a href="board/signup">회원가입</a></button>
-        <button><a href="board/signin">로그인</a></button>
-        <button><a href="board">비회원 입장</a></button>
+        <div class="position-absolute bottom-50 end-50">
+            <h3>무엇으로 만들지 모르는 공간</h3>
+            <button class="btn btn-dark"><a href="board/signup" style="color: white;">회원가입</a></button>
+            <button class="btn btn-dark"><a href="board/signin" style="color: white;">로그인</a></button>
+            <button class="btn btn-dark"><a href="board" style="color: white;">비회원 입장</a></button>
+        </div>
     </body>
 </html>

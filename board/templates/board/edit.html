@@ -1,16 +1,19 @@
 <html>
     <head>
         {% load static %}
-        <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link rel="stylesheet"  type="text/css" href="{% static 'css/bootstrap.min.css' %}"> 
     </head>
     <body>
-        <h3>게시글 수정</h3>
-            <form method="POST">
-                {% csrf_token %}
-                제목<br>{{detail.title}}<br>
-                내용<br>{{detail.content}}<br><br> 
-                <button><a href="/board/">취소</a></button>
-                <input type="submit" value="확인">
-            </form>
+        <div class="container my-3">
+            <h3>게시글 수정</h3>
+                <form method="POST">
+                    {% csrf_token %}
+                    제목<br>{{detail.title}}<br>
+                    내용<br>{{detail.content}}<br><br> 
+                    <button type="button" class="btn btn-dark"><a href="/board/" style="color: white;">취소</a></button>
+                    <input type="submit" class="btn btn-dark" value="확인">
+                </form>
+        </div>
     </body>
 </html>
