@@ -14,7 +14,7 @@ def index_page(request):
 def board_list(request): # 클라이언트가 보낸것
     if request.method == "GET": # 클라이언트가 요청한 method
         result = []
-        for board in Board.objects.all():
+        for board in Board.objects.all().order_by('-created_at'):
             result.append({
                 "id": board.id,
                 "title": board.title,
