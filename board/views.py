@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.views import View
 from django.views.generic import DetailView
+from django.core.paginator import Paginator
 
 from board.models import Board, Comment
 from board.forms import SubCommentForm, WritePost, UpdatePost, UserForm, LoginForm, CommentForm
@@ -13,15 +14,11 @@ def index_page(request):
 
 def board_list(request): # 클라이언트가 보낸것
     if request.method == "GET": # 클라이언트가 요청한 method
-        result = []
-        for board in Board.objects.all().order_by('-created_at'):
-            result.append({
-                "id": board.id,
-                "title": board.title,
-                "user": board.created_by,
-                "created_at": board.created_at
-            })
-        return render(request, 'board/list.html', {"board_data": result})
+        board_list = Board.objects.all().order_by('-created_at')
+        paginator = Paginator(board_list, 5)
+        page = request.GET.get('page', 1)
+        page_obj = paginator.get_page(page)
+        return render(request, 'board/list.html', {'page_obj': page_obj})
 
 # def detail(request, id): # GET / POST / PUT / DELETE (detail read, detail insert, detail edit, detail delete)
 #     board = Board.objects.get(pk=id)
