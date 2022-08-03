@@ -15,7 +15,7 @@ def index_page(request):
 def board_list(request): # 클라이언트가 보낸것
     if request.method == "GET": # 클라이언트가 요청한 method
         board_list = Board.objects.all().order_by('-created_at')
-        paginator = Paginator(board_list, 5)
+        paginator = Paginator(board_list, 8)
         page = request.GET.get('page', 1)
         page_obj = paginator.get_page(page)
         return render(request, 'board/list.html', {'page_obj': page_obj})
