@@ -19,13 +19,13 @@
                     <button type="button" class="btn btn-dark"><a href="signup" style="color:white;">회원가입</a></button><br>
                 {% endif %}
             <br>
-                <table class="table">
+                <table class="table" style="table-layout: fixed;word-break:break-all;">
                     <thead>
                         <tr class="table-dark">
-                            <th>번호</th>
-                            <th>제목</th>
+                            <th style="width: 8%;">번호</th>
+                            <th style="width: 35%;">제목</th>
                             <th>글쓴이</th>
-                            <th>작성 시간</th>
+                            <th style="width: 30%;">작성 시간</th>
                         </tr>
                     </thead>
                     {% for data in page_obj %}
