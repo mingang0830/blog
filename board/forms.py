@@ -18,8 +18,10 @@ class UpdatePost(forms.ModelForm):
 class UserForm(UserCreationForm):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
+        self.fields['username'].label = '아이디'
         self.fields['username'].widget.attrs['placeholder'] = "문자, 숫자, @.+-_만 가능"
         self.fields['password1'].widget.attrs['placeholder'] = "8자 이상 문자, 숫자 포함"
+    
     email = forms.EmailField(label="이메일")
     
     class Meta:
@@ -28,6 +30,13 @@ class UserForm(UserCreationForm):
 
 
 class LoginForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+        self.fields['username'].label = '아이디'
+        self.fields['password'].label = '비밀번호'
+    
+    password = forms.CharField(widget=forms.PasswordInput())
+
     class Meta:
         model = User
         fields = ['username', 'password']
