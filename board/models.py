@@ -4,11 +4,17 @@ from django.db import models
 
 
 class Board(models.Model):
-    title = models.CharField(max_length=512)
+    title = models.CharField(max_length=200)
     content = models.TextField()
     created_by = models.CharField(max_length=218)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
+
+    def summary(self):
+        if len(self.title) > 30:
+            return self.title[:30] + '...'
+        else:
+            return self.title
 
 class Commentable(models.Model):
     class Meta:

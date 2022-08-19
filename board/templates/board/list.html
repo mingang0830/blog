@@ -32,7 +32,7 @@
                     <tbody>
                         <tr>
                             <th>{{data.id}}</th>
-                            <th><a href="{{data.id}}" style="color: black;">{{data.title}}
+                            <th><a href="{{data.id}}" style="color: black;">{{data.summary}}
                                 {% if data.comment_set.count > 0%}
                                 <small style="color: gray;">({{data.comment_set.count|add:data.subcomment_set.count}})</small>
                                 {% endif %}
