@@ -13,10 +13,10 @@
         <div class="container my-3">
             <h3>글 목록</h3>
                 {% if user.is_authenticated %}
-                    <button type="button" class="btn btn-dark"><a href="logout" style="color:white;">로그아웃</a></button><br>
+                    <button type="button" class="btn btn-dark" onclick="location.href='logout'" style="color:white;">로그아웃</button><br>
                 {% else %}
-                    <button type="button" class="btn btn-dark"><a href="signin" style="color:white;">로그인</a></button>
-                    <button type="button" class="btn btn-dark"><a href="signup" style="color:white;">회원가입</a></button><br>
+                    <button type="button" class="btn btn-dark" onclick="location.href='signin'" style="color:white;">로그인</button>
+                    <button type="button" class="btn btn-dark" onclick="location.href='signup'" style="color:white;">회원가입</button><br>
                 {% endif %}
             <br>
                 <table class="table" style="table-layout: fixed;word-break:break-all;">
@@ -43,7 +43,7 @@
                     </tbody>
                     {% endfor %}
                 </table>
-                <br><button type="button" class="btn btn-dark"><a href="write" style="color:white;">글쓰기</a></button>
+                <br><button type="button" class="btn btn-dark" onclick="location.href='write'" style="color:white;">글쓰기</button>
             <!-- 페이징 -->
             <ul class="pagination justify-content-center">
                 <!--이전 페이지-->

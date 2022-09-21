@@ -14,14 +14,14 @@
                     {% if user.username == detail.created_by%}
                     <table>
                         <td>
-                            <button type="button" class="btn btn-dark"><a href="{{detail.id}}/edit" style="color: white;">수정</a></button> <br/>
+                            <button type="button" onclick="location.href='{{detail.id}}/edit'" style="color: white;" class="btn btn-dark">수정</button> <br/>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-dark"><a href="{{detail.id}}/remove" style="color: white;">삭제</a></button>
+                            <button type="button" class="btn btn-dark" onclick="location.href='{{detail.id}}/remove'" style="color: white;">삭제</button>
                         </td>
                         {% endif %}
                         <td>
-                            <button type="button" class="btn btn-dark"><a href="/board/" style="color: white;">목록</a></button>
+                            <button type="button" class="btn btn-dark" onclick="location.href='/board/'" style="color: white;">목록</button>
                         </td>
                     </table><br><br>
                     <!--댓글 입력-->
