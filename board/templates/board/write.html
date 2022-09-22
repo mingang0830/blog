@@ -7,10 +7,11 @@
     <body>
         <div class="container my-3">
             <h3>새 글 쓰기</h3>
-            <form method="POST" name="write">
+            <form method="POST" name="write" enctype="multipart/form-data">
                 {% csrf_token %}
                 제목<br>{{write_form.title}}<br>
-                내용<br>{{write_form.content}}<br><br>         
+                내용<br>{{write_form.content}}<br><br>
+                첨부파일 {{write_form.upload_file}}<br><br>         
                 <button type="button" class="btn btn-dark" onclick="location.href='/board/'" style="color: white;">취소</button>
                 <input type="submit"  class="btn btn-dark" value="확인">
             </form>

@@ -4,9 +4,14 @@ from django.contrib.auth.models import User
 from .models import Board, Comment, SubComment
 
 
-class WritePost(forms.Form):
-    title = forms.CharField(max_length=512, required=True, )
-    content = forms.CharField(widget=forms.Textarea, required=True)
+class WritePost(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(WritePost, self).__init__(*args, **kwargs)
+        self.fields["upload_file"].required=False
+        
+    class Meta:
+        model = Board
+        fields = ['title', 'content', 'upload_file']
 
 
 class UpdatePost(forms.ModelForm):
@@ -53,3 +58,4 @@ class SubCommentForm(forms.ModelForm):
         model = SubComment
         fields = ['subcomment']
  
+        

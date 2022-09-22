@@ -1,7 +1,7 @@
 from statistics import mode
 from django.contrib.auth.models import User
 from django.db import models
-
+import os
 
 class Board(models.Model):
     title = models.CharField(max_length=200)
@@ -9,6 +9,7 @@ class Board(models.Model):
     created_by = models.CharField(max_length=218)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
+    upload_file = models.FileField(upload_to='uploads/', null=True)
 
     def summary(self):
         if len(self.title) > 30:
@@ -32,4 +33,5 @@ class Comment(Commentable):
 class SubComment(Commentable):
     subcomment = models.CharField('대댓글', max_length=150,null=True)
     parent_comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True)
+    
     

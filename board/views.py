@@ -66,7 +66,9 @@ def write(request):
                 title = write_post_form.cleaned_data['title'],
                 content = write_post_form.cleaned_data['content'],
                 created_by = request.user,
+                upload_file = request.FILES['upload_file']
             )
+
             return redirect('/board/')
     return render(request, 'board/write.html', {'write_form': write_post_form})
 
@@ -138,3 +140,5 @@ def new_subcomment(request, id):
         subcomment.parent_comment_id = request.POST.get('comment_id')
         subcomment_form.save()
         return redirect(f'/board/{id}')
+
+
