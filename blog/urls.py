@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
+from django.conf.urls.static import static
+from django.conf import settings
 from board.views import board_list, delete_comment, detail, new_subcomment, remove_post, write, update_post, signup, signin, signout, new_comment, index_page
 
 urlpatterns = [
@@ -32,5 +33,5 @@ urlpatterns = [
     path('board/logout', signout),
     path('board/<int:id>/new_comment/', new_comment),
     path('board/<int:id>/delete_comment/<int:c_id>', delete_comment),
-    path('board/<int:id>/new_subcomment/', new_subcomment)
-]
+    path('board/<int:id>/new_subcomment/', new_subcomment),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
