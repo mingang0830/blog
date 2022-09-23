@@ -1,3 +1,4 @@
+from distutils.command.upload import upload
 from fileinput import filename
 from urllib import request
 from xml.dom.minidom import Document
@@ -55,12 +56,6 @@ def detail(request, id):
         if post_from_id.upload_file:
             file_path = post_from_id.upload_file.path
             filename = os.path.basename(file_path)
-            # file_path = post_from_id.upload_file.path
-            # fs = FileSystemStorage(file_path)
-            # file_response = FileResponse(fs.open(file_path, 'rb'), content_type = "application/octet-stream; charset=utf-8", filename = os.path.basename(file_path))
-            # file_response['Content-Disposition'] = 'attachment; filename=' + os.path.basename(file_path)
-            # file_response.close()
-            print(filename)
             return render(request, 'board/detail.html', {'detail': post_from_id, 'comment_form': comment_form, 'subcomment_form': subcomment_form, 'filename': filename})
 
         return render(request, 'board/detail.html', {'detail': post_from_id, 'comment_form': comment_form, 'subcomment_form': subcomment_form})
@@ -83,16 +78,20 @@ def remove_post(request, id):
 
 
 def write(request):
-    write_post_form = WritePost(request.POST or None)
+    write_post_form = WritePost(request.POST, request.FILES or None)
     if request.method == "POST":      
         if write_post_form.is_valid():
-            Board.objects.create(
+            if request.FILES:
+                Board.objects.create(
                 title = write_post_form.cleaned_data['title'],
                 content = write_post_form.cleaned_data['content'],
                 created_by = request.user,
-                upload_file = request.FILES['upload_file']
-            )
-
+                upload_file = request.FILES['upload_file'])
+            else:
+                Board.objects.create(
+                title = write_post_form.cleaned_data['title'],
+                content = write_post_form.cleaned_data['content'],
+                created_by = request.user)
             return redirect('/board/')
     return render(request, 'board/write.html', {'write_form': write_post_form})
 
