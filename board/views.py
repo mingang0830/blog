@@ -1,12 +1,15 @@
+from fileinput import filename
+from urllib import request
+from xml.dom.minidom import Document
 from django.shortcuts import redirect, render
-from django.http import HttpResponse
+from django.http import HttpResponse, FileResponse
 from django.contrib.auth import authenticate, login, logout
 from django.views import View
-from django.views.generic import DetailView
 from django.core.paginator import Paginator
-
+from django.core.files.storage import FileSystemStorage
 from board.models import Board, Comment
 from board.forms import SubCommentForm, WritePost, UpdatePost, UserForm, LoginForm, CommentForm
+import os
 
 
 def index_page(request):
@@ -49,7 +52,28 @@ def detail(request, id):
         post_from_id = Board.objects.get(pk=id)
         comment_form = CommentForm()
         subcomment_form = SubCommentForm()
+        if post_from_id.upload_file:
+            file_path = post_from_id.upload_file.path
+            filename = os.path.basename(file_path)
+            # file_path = post_from_id.upload_file.path
+            # fs = FileSystemStorage(file_path)
+            # file_response = FileResponse(fs.open(file_path, 'rb'), content_type = "application/octet-stream; charset=utf-8", filename = os.path.basename(file_path))
+            # file_response['Content-Disposition'] = 'attachment; filename=' + os.path.basename(file_path)
+            # file_response.close()
+            print(filename)
+            return render(request, 'board/detail.html', {'detail': post_from_id, 'comment_form': comment_form, 'subcomment_form': subcomment_form, 'filename': filename})
+
         return render(request, 'board/detail.html', {'detail': post_from_id, 'comment_form': comment_form, 'subcomment_form': subcomment_form})
+
+def download(request, id):
+    if request.method == "GET": 
+        post_from_id = Board.objects.get(pk=id)
+        if post_from_id.upload_file:
+            file_path = post_from_id.upload_file.path
+            fs = FileSystemStorage(file_path)
+            file_response = FileResponse(fs.open(file_path, 'rb'), content_type = "application/octet-stream; charset=utf-8", filename = os.path.basename(file_path))
+            file_response['Content-Disposition'] = 'attachment; filename=' + os.path.basename(file_path)
+            return file_response
 
 def remove_post(request, id):
     post_from_id = Board.objects.get(pk=id)

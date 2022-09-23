@@ -17,13 +17,14 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
-from board.views import board_list, delete_comment, detail, new_subcomment, remove_post, write, update_post, signup, signin, signout, new_comment, index_page
+from board.views import board_list, delete_comment, detail, new_subcomment, remove_post, write, update_post, signup, signin, signout, new_comment, index_page, download
 
 urlpatterns = [
     path('', index_page),
     path('admin/', admin.site.urls),
     path('board/', board_list),
     path('board/<int:id>', detail),
+    path('board/<int:id>/download', download),
     # path('board/<int:id>', DetailView.as_view()),
     path('board/write', write),
     path('board/<int:id>/edit', update_post),

@@ -11,6 +11,11 @@
                     제목<br>{{detail.title}}<br>
                     글쓴이<br><input type="text" name="created_by" value="{{detail.created_by}}" readonly><br>
                     내용<br><textarea rows="10" cols="50" name="content" readonly>{{detail.content}}</textarea><br><br>
+                    {% if filename %}
+
+                    첨부파일 <a href="{{detail.id}}/download" id = "attached_link" style="color: grey;" > {{filename}} </a>
+                    <br><br>
+                    {% endif %}
                     {% if user.username == detail.created_by%}
                     <table>
                         <td>
